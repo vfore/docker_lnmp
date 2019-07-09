@@ -1,0 +1,65 @@
+version: '3'
+
+networks:
+  net:
+    ipam:
+      config:
+      - subnet: 172.80.0.0/24
+#       gateway: 172.80.0.1
+
+services:
+  mysql:
+    build: ./mysql/
+    hostname: mysql
+    container_name: mysql
+    ports:
+        - '3306:3306'
+    networks:
+        net:
+            ipv4_address: 172.80.0.2
+    volumes:
+        - /home/server/mysql/data/:/home/server/mysql/data/
+        - /home/server/mysql/my.cnf:/etc/mysql/my.cnf
+        - /home/server/mysql/conf.d/:/etc/mysql/conf.d/
+    restart: always
+    environment:
+        MYSQL_ROOT_PASSWORD: 123456
+    tty: true
+    
+  php-fpm:
+    build: ./php-fpm/
+    hostname: php-fpm
+    container_name: php-fpm
+    networks:
+      net:
+        ipv4_address: 172.80.0.3
+    volumes:
+      - /home/server/php/php.ini:/usr/local/etc/php/php.ini
+      - /home/logs/php/:/home/logs/php/
+      - /home/www/:/home/www/
+    restart: always
+    environment:
+      - TZ=Asia/Shanghai
+    tty: true
+    
+  nginx:
+    build: ./nginx/
+    hostname: nginx
+    container_name: nginx
+    ports:
+      - '80:80'
+      - '443:443'
+    networks:
+      net:
+        ipv4_address: 172.80.0.4
+    extra_hosts:
+      - 'php-fpm:172.80.0.3'
+    volumes:
+      - /home/server/nginx/nginx.conf:/etc/nginx/nginx.conf
+      - /home/server/nginx/conf.d/:/etc/nginx/conf.d/
+      - /home/www/:/home/www/
+      - /home/logs/nginx/:/home/logs/nginx/
+    restart: always
+    environment:
+      - TZ=Asia/Shanghai
+    tty: true
