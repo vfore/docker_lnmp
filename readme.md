@@ -24,16 +24,16 @@
 		/home/
 		├── server                      服务目录
 		│   ├── nginx                 	Nginx配置目录
-		│		├── nginx.conf			Nginx默认配置文件
-		│		└── conf.d				Nginx用户站点配置目录
-		│   ├── mysql              		MySQL配置目录
-		│		├── my.cnf				MySQL默认配置文件
-		│		├── data				MySQL数据目录
-		│		└── conf.d				MySQL用户配置目录
+		│	├── nginx.conf		Nginx默认配置文件
+		│	└── conf.d		Nginx用户站点配置目录
+		│   ├── mysql              	MySQL配置目录
+		│	├── my.cnf		MySQL默认配置文件
+		│	├── data		MySQL数据目录
+		│	└── conf.d		MySQL用户配置目录
 		│   ├── php                 	PHP配置目录
-		│		└── php.ini             PHP配置文件
+		│	└── php.ini             PHP配置文件
 		│
-		├── logs                  		日志目录
-		│	├── nginx					Nginx日志目录
-		│	└── php						PHP日志目录
-		└── www 						PHP代码目录和Nginx资源目录
+		├── logs                  	日志目录
+		│    ├── nginx			Nginx日志目录
+		│    └── php			PHP日志目录
+		└── www 			PHP代码目录和Nginx资源目录
