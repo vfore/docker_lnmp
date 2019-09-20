@@ -3,7 +3,7 @@ MAINTAINER vfore "timesdev@163.com"
 # 更换成阿里云源
 RUN sed -i "s/dl-cdn.alpinelinux.org/mirrors.aliyun.com/g" /etc/apk/repositories
 
-RUN apk add --no-cache autoconf g++ libtool make curl-dev libxml2-dev linux-headers libmcrypt-dev icu icu-dev icu-libs gettext-dev freetype-dev libjpeg-turbo-dev libpng-dev libxslt-dev libzip-dev bzip2-dev
+RUN apk add --no-cache autoconf g++ libtool make libxml2-dev linux-headers libmcrypt-dev icu icu-dev icu-libs gettext-dev freetype-dev libjpeg-turbo-dev libpng-dev libxslt-dev libzip-dev bzip2-dev
 
 # 安装php扩展
 RUN docker-php-ext-install pdo_mysql && docker-php-ext-install mysqli && docker-php-ext-install bcmath && docker-php-ext-install intl \
