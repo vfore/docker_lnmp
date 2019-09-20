@@ -5,45 +5,28 @@ networks:
     ipam:
       config:
       - subnet: 172.80.0.0/24
-#       gateway: 172.80.0.1
-
+        
 services:
-  mysql:
-    build: ./mysql/
-    image: vfore_mysql
-    hostname: mysql
-    container_name: mysql
+
+  php7.3:
+    build: ./php-fpm/7.3
+    image: vfore_php7.3
+    hostname: php7.3
+    container_name: php7.3
     ports:
-        - '3306:3306'
-    networks:
-        net:
-            ipv4_address: 172.80.0.2
-    volumes:
-        - /home/server/mysql/data/:/home/server/mysql/data/
-        - /home/server/mysql/my.cnf:/etc/mysql/my.cnf
-        - /home/server/mysql/conf.d/:/etc/mysql/conf.d/
-    restart: always
-    environment:
-        MYSQL_ROOT_PASSWORD: 123456
-    tty: true
-    
-  php-fpm:
-    build: ./php-fpm/
-    image: vfore_phpfpm
-    hostname: php-fpm
-    container_name: php-fpm
+      - '9000:9000'
     networks:
       net:
         ipv4_address: 172.80.0.3
     volumes:
-      - /home/server/php/php.ini:/usr/local/etc/php/php.ini
+      - /home/server/php/7.3/php.ini:/usr/local/etc/php/php.ini
       - /home/logs/php/:/home/logs/php/
       - /home/www/:/home/www/
     restart: always
     environment:
       - TZ=Asia/Shanghai
     tty: true
-    
+
   nginx:
     build: ./nginx/
     image: vfore_nginx
@@ -65,4 +48,25 @@ services:
     restart: always
     environment:
       - TZ=Asia/Shanghai
+    tty: true
+
+  mysql8:
+    build: ./mysql/8
+    image: vfore_mysql8
+    hostname: mysql8
+    container_name: mysql8
+    command: --default-authentication-plugin=mysql_native_password
+    ports:
+      - '3306:3306'
+    networks:
+      net:
+        ipv4_address: 172.80.0.2
+    volumes:
+      - /home/server/mysql/8/data/:/home/server/mysql/data/
+      - /home/server/mysql/8/my.cnf:/etc/mysql/my.cnf
+      - /home/server/mysql/8/conf.d/:/etc/mysql/conf.d/
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: 123456
+      #MYSQL_ALLOW_EMPTY_PASSWORD: NO
     tty: true
