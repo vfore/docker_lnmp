@@ -1,10 +1,11 @@
 FROM php:7.3-fpm
 MAINTAINER vfore "timesdev@163.com"
-
+RUN mv /etc/apt/sources.list /etc/apt/sources.list.bak
+COPY ./sources.list /etc/apt/
 RUN apt-get update && apt-get install -y \
 vim \
 git \
-curl \
+#curl \
 wget \
 iputils-ping \
 net-tools \
@@ -19,7 +20,7 @@ libssl-dev \
 && docker-php-ext-install opcache
 
 COPY ./redis-4.2.0.tgz /opt/redis-4.2.0.tgz
-COPY ./swoole-src-4.4.0.tar.gz /opt/swoole-src-4.4.0.tar.gz
+#COPY ./swoole-src-4.4.0.tar.gz /opt/swoole-src-4.4.0.tar.gz
 
 # 安装composer
 RUN curl -sS https://getcomposer.org/installer | php \
@@ -35,14 +36,14 @@ RUN cd /opt \
 && make && make install \
 && echo "extension=redis.so" > /usr/local/etc/php/conf.d/redis.ini
 
-# 安装swoole
-RUN cd /opt \
-#&& wget https://github.com/swoole/swoole-src/archive/v4.4.0.tar.gz \
-&& tar -zxvf ./swoole-src-4.4.0.tar.gz \
-&& cd swoole-src-4.4.0 \
-&& phpize \
-&& ./configure -with-php-config=/usr/local/bin/php-config --enable-openssl --enable-http2 \
-&& make && make install \
-&& echo "extension=swoole.so" > /usr/local/etc/php/conf.d/swoole.ini
+## 安装swoole
+#RUN cd /opt \
+##&& wget https://github.com/swoole/swoole-src/archive/v4.4.0.tar.gz \
+#&& tar -zxvf ./swoole-src-4.4.0.tar.gz \
+#&& cd swoole-src-4.4.0 \
+#&& phpize \
+#&& ./configure -with-php-config=/usr/local/bin/php-config --enable-openssl --enable-http2 \
+#&& make && make install \
+#&& echo "extension=swoole.so" > /usr/local/etc/php/conf.d/swoole.ini
 
 WORKDIR /home/www
